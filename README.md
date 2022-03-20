@@ -1,19 +1,19 @@
 <!--
  * @Author: mengchaobbbigrui
  * @Date: 2022-03-12 02:28:39
- * @LastEditTime: 2022-03-14 00:47:07
+ * @LastEditTime: 2022-03-20 17:23:51
  * @FilePath: /SecureCloudDisk/README.md
 -->
 SecureCloudDisk
 安全云盘
 
 安装openssh-server
-
+apt-get install openssh-server
 
 安装openssl
 
 先安装依赖
-yum install perl automake libtool unzip
+apt-get install perl automake libtool unzip
 
 tar -xvf zlib-1.2.11.tar.gz
 cd zlib-1.2.11/
@@ -24,10 +24,6 @@ make install
 tar -xvf openssl-1.1.1.tar.gz
 cd openssl-1.1.1
 ./config
-
-export LC_CTYPE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
 make
 make install
 
@@ -42,9 +38,21 @@ make install
 
 
 安装qt
-chmod 777 qt-opensource-linux-x64-5.12.4.run
-./qt-opensource-linux-x64-5.12.4.run
+wget https://download.qt.io/official_releases/qt/5.15/5.15.0/single/qt-everywhere-src-5.15.0.tar.xz
 
-// 报失败，找不到libx11,执行如下两条命令
-yum update
-yum install libx11-xcb-dev
+tar -xvf qt-everywhere-src-5.15.0.tar.xz
+cd qt-everywhere-src-5.15.0/
+./configure
+gmake
+make install
+
+报错：
+ERROR: The OpenGL functionality tests failed!
+You might need to modify the include and library search paths by editing QMAKE_INCDIR_OPENGL[_ES2],
+QMAKE_LIBDIR_OPENGL[_ES2] and QMAKE_LIBS_OPENGL[_ES2] in the mkspec for your platform.
+
+
+./configure -no-opengl
+
+gmake: command not found
+ln -s /usr/bin/make /usr/bin/gmake
