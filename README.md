@@ -1,60 +1,106 @@
 <!--
  * @Author: mengchaobbbigrui
  * @Date: 2022-03-12 02:28:39
- * @LastEditTime: 2022-03-21 22:45:10
+ * @LastEditTime: 2022-03-22 00:59:14
  * @FilePath: /SecureCloudDisk/README.md
 -->
 SecureCloudDisk
-安全云盘
 
-安装openssh-server
+## Install Dependence
+
+①install openssh-server
+
+```c
 apt-get install openssh-server
+```
 
-安装openssl
+②install zlib
 
-先安装依赖
+```c
+
 apt-get install perl automake libtool unzip
 
 tar -xvf zlib-1.2.11.tar.gz
+
 cd zlib-1.2.11/
+
 ./configure
+
 make
+
 make install
 
+```
+
+③install openssl
+
+```c
 tar -xvf openssl-1.1.1.tar.gz
+
 cd openssl-1.1.1
+
 ./config
+
 make
+
 make install
 
+```
 
-安装libevent
+④install libevent
+
+```c
+
 unzip libevent-master.zip
+
 cd libevent-master
-./autogen.sh  #具体报错具体安装对应的东西
+
+./autogen.sh
+
 ./configure
+
 make
+
 make install
 
 test/regress > log.txt 验证是否安装成功
 
+```
 
-安装qt
+
+⑤install QT SDK
+
+```c
+
 wget https://download.qt.io/official_releases/qt/5.15/5.15.0/single/qt-everywhere-src-5.15.0.tar.xz
 
 tar -xvf qt-everywhere-src-5.15.0.tar.xz
+
 cd qt-everywhere-src-5.15.0/
+
 ./configure
+
 gmake
+
 make install
 
-报错：
+```
+
+when install QT SDK will take some problems:
+
+```c
+
 ERROR: The OpenGL functionality tests failed!
+
 You might need to modify the include and library search paths by editing QMAKE_INCDIR_OPENGL[_ES2],
 QMAKE_LIBDIR_OPENGL[_ES2] and QMAKE_LIBS_OPENGL[_ES2] in the mkspec for your platform.
 
+```
+
+you can do this when you at configure step:
+
+```c
 
 ./configure -no-opengl -skip qtlocation
 
-gmake: command not found
-ln -s /usr/bin/make /usr/bin/gmake
+```
