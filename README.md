@@ -1,7 +1,7 @@
 <!--
  * @Author: mengchaobbbigrui
  * @Date: 2022-03-12 02:28:39
- * @LastEditTime: 2022-03-20 17:23:51
+ * @LastEditTime: 2022-03-21 22:40:50
  * @FilePath: /SecureCloudDisk/README.md
 -->
 SecureCloudDisk
@@ -52,7 +52,7 @@ You might need to modify the include and library search paths by editing QMAKE_I
 QMAKE_LIBDIR_OPENGL[_ES2] and QMAKE_LIBS_OPENGL[_ES2] in the mkspec for your platform.
 
 
-./configure -no-opengl
+./configure -no-opengl -skip qtlocation
 
 gmake: command not found
 ln -s /usr/bin/make /usr/bin/gmake
