@@ -1,7 +1,7 @@
 <!--
  * @Author: mengchaobbbigrui
  * @Date: 2022-03-12 02:28:39
- * @LastEditTime: 2022-03-21 22:40:50
+ * @LastEditTime: 2022-03-21 22:45:10
  * @FilePath: /SecureCloudDisk/README.md
 -->
 SecureCloudDisk
@@ -35,6 +35,8 @@ cd libevent-master
 ./configure
 make
 make install
+
+test/regress > log.txt 验证是否安装成功
 
 
 安装qt
