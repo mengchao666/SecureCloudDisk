@@ -56,11 +56,11 @@ make install
 
 ```c
 
-git clone https://github.com/libevent/libevent.git
+git clone git@github.com:libevent/libevent.git
 
-unzip libevent-master.zip
+unzip libevent.zip
 
-cd libevent-master
+cd libevent
 
 ./autogen.sh
 
