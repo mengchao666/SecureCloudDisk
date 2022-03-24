@@ -18,6 +18,8 @@ apt-get install openssh-server
 
 ```c
 
+wget http://zlib.net/zlib-1.2.11.tar.gz
+
 apt-get install perl automake libtool unzip
 
 tar -xvf zlib-1.2.11.tar.gz
@@ -35,6 +37,9 @@ make install
 ③install openssl
 
 ```c
+
+wget https://www.openssl.org/source/openssl-1.1.1.tar.gz
+
 tar -xvf openssl-1.1.1.tar.gz
 
 cd openssl-1.1.1
@@ -50,6 +55,8 @@ make install
 ④install libevent
 
 ```c
+
+git clone https://github.com/libevent/libevent.git
 
 unzip libevent-master.zip
 
