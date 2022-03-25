@@ -3,7 +3,7 @@
  * @Date: 2022-03-20 01:09:58
  * @LastEditTime: 2022-03-22 19:09:34
  * @LastEditors: Please set LastEditors
- * @Description: 设置事件的优先级、启动事件循环
+ * @Description: set event priority and event loop
  * @FilePath: /code/libevent/src/main.cpp
  */
 #include <iostream>

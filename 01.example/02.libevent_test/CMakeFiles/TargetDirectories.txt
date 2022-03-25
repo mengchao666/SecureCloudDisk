@@ -1,0 +1,3 @@
+/Users/chaomeng/Documents/code/SecureCloudDisk/01.example/02.libevent_test/CMakeFiles/main.dir
+/Users/chaomeng/Documents/code/SecureCloudDisk/01.example/02.libevent_test/CMakeFiles/edit_cache.dir
+/Users/chaomeng/Documents/code/SecureCloudDisk/01.example/02.libevent_test/CMakeFiles/rebuild_cache.dir

@@ -4,4 +4,4 @@ project (demo)
 
 add_executable(main main.cpp)
 
-target_link_libraries (main "/opt/homebrew/Cellar/libevent/2.1.12/lib/libevent.a")
+target_link_libraries (main "/usr/local/lib/libevent.so")

@@ -3,11 +3,11 @@
  * @Date: 2022-03-20 01:09:58
  * @LastEditTime: 2022-03-21 23:38:42
  * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: test libevent is install success
  * @FilePath: /code/libevent/src/main.cpp
  */
 #include <iostream>
-#include <event2/event.h>
+#include "event2/event.h"
 
 using namespace std;
 
