@@ -21,7 +21,7 @@ void StdinCallback(evutil_socket_t fd, short what, void *arg)
     cout << buffer << endl;
 }
 
-int main1()
+int main()
 {
     char *ch1 = "ev";
     char *ch2 = "ev1";

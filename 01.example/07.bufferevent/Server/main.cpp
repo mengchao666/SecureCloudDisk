@@ -26,7 +26,7 @@ void read_buf_cb(struct bufferevent *bev, void *cbarg)
     int ret, i;
     char buf[1024];
     ret = bufferevent_read(bev, buf, sizeof(buf));
-    cout << "read_buf_cd length = " << ret << endl;
+    printf("read_buf_cd length %d\n", ret);
     for (i = 0; i < ret; i++)
     {
         buf[i] = toupper(buf[i]);
@@ -36,6 +36,7 @@ void read_buf_cb(struct bufferevent *bev, void *cbarg)
 
 void event_cb(struct bufferevent *bev, short event, void *cbarg)
 {
+    cout << "event_cb" << endl;
     struct event_base *base = (struct event_base *)cbarg;
     if (BEV_EVENT_READING & event)
         puts("BEV_EVENT_READING");
@@ -52,27 +53,29 @@ void event_cb(struct bufferevent *bev, short event, void *cbarg)
 
 void AcceptCb(evutil_socket_t sock, short what, void *arg)
 {
+    cout << "AcceptCb" << endl;
     sockaddr_in clientAddr;
-    int clientAddrLen;
+    socklen_t clientAddrLen;
     bufferevent *bev;
     event_base *base = (struct event_base *)arg;
     cout << "accept is here" << endl;
-    bzero((void *)&clientaddr, sizeof(clientaddr));
+    bzero((void *)&clientAddr, sizeof(clientAddr));
     int clientFd = accept(sock, (struct sockaddr *)&clientAddr, &clientAddrLen);
+    cout << "clientFd = " << clientFd << endl;
     evutil_make_socket_nonblocking(clientFd);
     bev = bufferevent_socket_new(
         base, clientFd, BEV_OPT_CLOSE_ON_FREE | BEV_OPT_DEFER_CALLBACKS);
     bufferevent_setcb(bev, (bufferevent_data_cb)read_buf_cb, NULL,
                       (bufferevent_event_cb)event_cb, (void *)base);
     bufferevent_enable(bev, EV_READ);
-    bufferevent_setwatermark(bev, EV_READ, 10, 0);
 }
 
 void MainLoop(int sock)
 {
+    cout << "MainLoop" << endl;
     event_base *base = event_base_new();
-    event *ev = event_new(base, sock, EV_READ | EV_WRITE | EV_PERSIST,
-                          (event_callback_fn)AcceptCb, NULL);
+    event *ev = event_new(base, sock, EV_READ | EV_PERSIST,
+                          (event_callback_fn)AcceptCb, (void *)base);
     event_add(ev, NULL);
 
     event_base_dispatch(base);
@@ -95,17 +98,19 @@ int main(int argc, char **argv)
     memset(&saddr, 0, sizeof(saddr));
     saddr.sin_family = AF_INET;
     saddr.sin_port = htons(PORT); // 主机字节序转换为网络字节序
-    saddr.sin_addr.s_addr = htonl(0);
+    saddr.sin_addr.s_addr = htonl(INADDR_ANY);
     if (::bind(sock, (sockaddr *)&saddr, sizeof(saddr)) != 0)
     {
-        cerr << "bind port " << port << " failed!" << endl;
+        cerr << "bind port " << PORT << " failed!" << endl;
     }
-    cout << "bind port " << port << " success" << endl;
+    cout << "bind port " << PORT << " success" << endl;
 
     // listen
     listen(sock, 10);
 
-    MainLoop(sock)
+    MainLoop(sock);
 
-        return 0;
+    close(sock);
+
+    return 0;
 }
