@@ -1,4 +1,5 @@
 #include "XThread.h"
+#include <XTask.h>
 #include <event2/buffer.h>
 #include <event2/event.h>
 #include <iostream>
@@ -23,7 +24,41 @@ void XThread::Notify(evutil_socket_t fd, short which)
     {
         return;
     }
-    cout << "id = " << id << endl;
+    cout << "id = " << id << buf << endl;
+    XTask *task = NULL;
+
+    // 获取任务，并初始化任务
+    tasks_mutex.lock();
+    if (tasks.empty())
+    {
+        tasks_mutex.unlock();
+        return;
+    }
+    task = tasks.front(); // 先进先出
+    tasks.pop_front();
+    tasks_mutex.unlock();
+    task->Init();
+}
+
+// 添加处理的任务，一个线程可以同时处理多个任务，共用一个event_base
+void XThread::AddTask(XTask *t)
+{
+    if (!t)
+        return;
+    t->base = this->base;
+    tasks_mutex.lock();
+    tasks.push_back(t);
+    tasks_mutex.unlock();
+}
+
+// 线程激活
+void XThread::Activate()
+{
+    int re = write(this->notify_send_fd, "c", 1);
+    if (re <= 0)
+    {
+        cerr << "Activate failed" << endl;
+    }
 }
 
 // 启动线程

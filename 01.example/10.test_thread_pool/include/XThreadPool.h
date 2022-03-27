@@ -1,10 +1,12 @@
 #include <vector>
 
 class XThread;
+class XTask;
 class XThreadPool
 {
 private:
     int threadCount = 0; // 线程数量
+    int lastThread = -1;
     std::vector<XThread *> threads;
     XThreadPool(){};
 
@@ -18,4 +20,7 @@ public:
 
     // 初始化所有线程并启动线程
     void Init(int threadCount);
+
+    // 分发线程
+    void Dispatch(XTask *task);
 };

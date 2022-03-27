@@ -1,3 +1,4 @@
+#include <XFtpServerCMD.h>
 #include <XThread.h>
 #include <XThreadPool.h>
 #include <event2/bufferevent.h>
@@ -64,34 +65,14 @@ void EventCB(struct bufferevent *bev, short what, void *ctx)
     }
 }
 
-void ListenCB(struct evconnlistener *evc, evutil_socket_t client_socket,
+void ListenCB(struct evconnlistener *e, evutil_socket_t s,
               struct sockaddr *client_addr,
               int socklen, void *arg)
 {
-    cout << "ListenCB" << endl;
-    char ip[16] = {0};
-    sockaddr_in *addr = (sockaddr_in *)client_addr;
-    evutil_inet_ntop(AF_INET, &addr->sin_addr, ip, sizeof(ip));
-    cout << "client ip is = " << ip << endl;
-
-    // 创建bufferevent上下文  内部创建了event对象read 和 write
-    // BEV_OPT_CLOSE_ON_FREE 关闭bev时关闭socket
-    event_base *base = (event_base *)arg;
-    bufferevent *bev = bufferevent_socket_new(base, client_socket, BEV_OPT_CLOSE_ON_FREE);
-    if (bev == NULL)
-    {
-        cerr << "bufferevent new failed" << endl;
-    }
-
-    // 添加监控事件
-    bufferevent_enable(bev, EV_READ | EV_WRITE);
-
-    // 超时时间设定，秒，微秒  读超时 和 写超时
-    timeval t1 = {10, 0};
-    bufferevent_set_timeouts(bev, &t1, 0);
-
-    // 设置回调函数
-    bufferevent_setcb(bev, ReadCB, WriteCB, EventCB, base);
+    cout << "listen CB" << endl;
+    XTask *task = new XFtpServerCMD();
+    task->sock = s;
+    XThreadPool::Get()->Dispatch(task);
 }
 
 int main()
