@@ -1,3 +1,5 @@
+#ifndef XTHREAD_H
+#define XTHREAD_H
 #include <event2/bufferevent.h>
 #include <event2/event.h>
 #include <list>
@@ -32,3 +34,4 @@ private:
     std::list<XTask *> tasks; // 任务列表
     std::mutex tasks_mutex;   // 线程安全互斥
 };
+#endif

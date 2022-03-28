@@ -1,3 +1,5 @@
+#ifndef XTASK_H
+#define XTASK_H
 #include <event2/event.h>
 class XTask
 {
@@ -9,3 +11,4 @@ public:
     //初始化任务
     virtual bool Init() = 0;
 };
+#endif

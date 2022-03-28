@@ -9,6 +9,7 @@
         "__mutex_base": "cpp",
         "ostream": "cpp",
         "complex": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "thread": "cpp"
     }
 }

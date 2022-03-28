@@ -1,3 +1,5 @@
+#ifndef XTHREADPOOL_H
+#define XTHREADPOOL_H
 #include <vector>
 
 class XThread;
@@ -8,7 +10,6 @@ private:
     int threadCount = 0; // 线程数量
     int lastThread = -1;
     std::vector<XThread *> threads;
-    XThreadPool(){};
 
 public:
     // 单例模式
@@ -24,3 +25,4 @@ public:
     // 分发线程
     void Dispatch(XTask *task);
 };
+#endif
