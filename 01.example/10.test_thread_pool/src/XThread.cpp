@@ -76,6 +76,10 @@ void XThread::Start()
 void XThread::Main()
 {
     cout << id << "void XThread::Main() begin" << endl;
+    if (!base)
+    {
+        cerr << "Thread::Main() failed! base is null" << endl;
+    }
     event_base_dispatch(base);
     event_base_free(base);
     cout << id << "void XThread::Main() end" << endl;

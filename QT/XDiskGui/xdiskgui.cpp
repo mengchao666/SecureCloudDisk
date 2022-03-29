@@ -2,12 +2,16 @@
 #include "ui_xdiskgui.h"
 #include <QMessageBox>
 #include <QFileDialog>
+#include <string>
+#include <xdiskclient.h>
 
+using namespace std;
 XDiskGUI::XDiskGUI(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::XDiskGUI)
 {
     ui->setupUi(this);
+    XDiskClient::Get()->Init();
 }
 
 XDiskGUI::~XDiskGUI()
@@ -17,7 +21,19 @@ XDiskGUI::~XDiskGUI()
 
 void XDiskGUI::Refresh()
 {
+    // 服务器路径 服务器IP 服务器端口
+    string ip = ui->ipEdit->text().toStdString();
+    string root = ui->pathEdit->text().toStdString();
+    int port = ui->portBox->value();
     QMessageBox::information(this, "", "Refresh");
+
+    // 1连接服务器
+    XDiskClient::Get()->SetServerIP(ip);
+    XDiskClient::Get()->SetServerPort(port);
+    XDiskClient::Get()->SetServerRoot(root);
+    XDiskClient::Get()->GetDir();
+    // 2等待回调
+
 }
 
 void XDiskGUI::Upload()
