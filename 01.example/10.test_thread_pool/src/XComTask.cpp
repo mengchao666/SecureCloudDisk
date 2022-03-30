@@ -59,7 +59,7 @@ bool XComTask::Init()
         comsock = -1;
     }
     // 建立连接bufferevent
-    m_bev = bufferevent_socket_new(basefunc(), -1, BEV_OPT_CLOSE_ON_FREE); // -1自动创建socket
+    m_bev = bufferevent_socket_new(basefunc(), comsock, BEV_OPT_CLOSE_ON_FREE); // -1自动创建socket
     if (!m_bev)
     {
         cerr << "bufferevent_socket_new error " << endl;
