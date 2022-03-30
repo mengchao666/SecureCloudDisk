@@ -45,7 +45,7 @@ void XThread::AddTask(XTask *t)
 {
     if (!t)
         return;
-    t->base = this->base;
+    t->set_base(this->base);
     tasks_mutex.lock();
     tasks.push_back(t);
     tasks_mutex.unlock();

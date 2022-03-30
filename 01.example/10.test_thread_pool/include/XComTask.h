@@ -20,6 +20,12 @@ public:
         this->m_serverPort = port;
     }
 
+    void EventCB(short what);
+
+    void ReadCB();
+protected:
+    char readbuffer[4096] = {0};
+
 private:
     bufferevent *m_bev;
     std::string m_serverIP;

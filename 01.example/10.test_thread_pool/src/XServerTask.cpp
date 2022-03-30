@@ -34,7 +34,7 @@ bool XServerTask::Init()
     sin.sin_port = htons(m_serverPort);
     sin.sin_family = AF_INET;
     // 设置回调函数
-    auto evc = evconnlistener_new_bind(base, SListenCB, this, LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE,
+    auto evc = evconnlistener_new_bind(basefunc(), SListenCB, this, LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE,
                                        10, (sockaddr *)&sin, sizeof(sin));
     if (!evc)
     {

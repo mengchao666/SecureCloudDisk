@@ -1,10 +1,12 @@
 cmake_minimum_required (VERSION 3.0)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../01.example/10.test_thread_pool/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_compile_options(-std=c++11)
 
-set(SRC_LIST  ${CMAKE_CURRENT_SOURCE_DIR}/xdisk_server.cpp)
+set(SRC_LIST  ${CMAKE_CURRENT_SOURCE_DIR}/src/xdisk_server.cpp 
+              ${CMAKE_CURRENT_SOURCE_DIR}/src/XFileServerTask.cpp)
 
 project (demo)
 

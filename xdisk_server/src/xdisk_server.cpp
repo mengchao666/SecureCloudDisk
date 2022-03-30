@@ -1,3 +1,4 @@
+#include <XFileServerTask.h>
 #include <XServerTask.h>
 #include <XThread.h>
 #include <XThreadPool.h>
@@ -13,6 +14,9 @@ using namespace std;
 static void ListenCB(int sock, struct sockaddr *addr, int socklen, void *arg)
 {
     cout << "ListenCB is here" << endl;
+    auto task = new XFileServerTask();
+    task->set_sock(sock);
+    XThreadPool::Get()->Dispatch(task);
 }
 
 // telnet 127.0.0.1 20010
