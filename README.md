@@ -16,7 +16,7 @@ git submodule update --init --recursive
 ./autogen.sh
 ./configure
 make
-makecheck
+make check
 sudo make install
 sudo ldconfig
 ```
