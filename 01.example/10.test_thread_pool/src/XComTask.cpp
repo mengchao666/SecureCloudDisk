@@ -11,10 +11,83 @@ static void SReadCB(struct bufferevent *bev, void *ctx)
     task->ReadCB();
 }
 
+bool XComTask::Write(const XMsg *msg)
+{
+    if (!m_bev || !msg || !msg->data || msg->size <= 0)
+    {
+        return false;
+    }
+
+    // 写入消息头
+    int re = bufferevent_write(m_bev, msg, sizeof(XMsgHead));
+    if (re != 0)
+    {
+        return false;
+    }
+    // 写入消息内容
+    re = bufferevent_write(m_bev, msg->data, msg->size);
+    if (re != 0)
+    {
+        return false;
+    }
+    return true;
+}
+
+void XComTask::ReadCB(const XMsg *msg)
+{
+    cout << "recv Msg " << msg->type << "size = " << msg->size << endl;
+}
+
 void XComTask::ReadCB()
 {
-    bufferevent_read(m_bev, readbuffer, sizeof(readbuffer));
-    cout << readbuffer << endl;
+    for (;;) // 确保边缘触发时能读到所有数据
+    {
+        // 接收消息XMsgHead
+        // 接收头部信息
+        if (!m_msg.data)
+        {
+            int headsize = sizeof(XMsgHead);
+            int len = bufferevent_read(m_bev, &m_msg, headsize);
+            if (len <= 0)
+            {
+                return;
+            }
+            if (len != headsize)
+            {
+                cerr << "msg head recv error" << endl;
+                return;
+            }
+
+            // 验证消息的有效性
+            if (m_msg.type >= MSG_MAX_TYPE || m_msg.size <= 0 || m_msg.size > MSG_MAX_SIZE)
+            {
+                cerr << "msg head is error" << endl;
+                return;
+            }
+            m_msg.data = new char[m_msg.size];
+        }
+        int readsize = m_msg.size - m_msg.recved;
+        if (readsize <= 0)
+        {
+            delete m_msg.data;
+            memset(&m_msg, 0, sizeof(m_msg));
+            return;
+        }
+        int length = bufferevent_read(m_bev, m_msg.data + m_msg.recved, readsize);
+        if (length <= 0)
+        {
+            return;
+        }
+        m_msg.recved += length;
+        if (m_msg.recved == m_msg.size)
+        {
+            // 处理消息
+            cout << "recved msg" << m_msg.size << endl;
+            ReadCB(&m_msg);
+            delete m_msg.data;
+            memset(&m_msg, 0, sizeof(m_msg));
+        }
+    }
 }
 
 static void SWriteCB(struct bufferevent *bev, void *ctx)
@@ -28,7 +101,12 @@ void XComTask::EventCB(short what)
     if (what & BEV_EVENT_CONNECTED)
     {
         cout << "connect is success" << endl;
-        bufferevent_write(m_bev, "OK", 3);
+        // bufferevent_write(m_bev, "OK", 3);
+        XMsg msg;
+        msg.type = MSG_GETDIR;
+        msg.size = 3;
+        msg.data = "./";
+        Write(&msg);
     }
 
     if (what & BEV_EVENT_ERROR || what & BEV_EVENT_TIMEOUT)
