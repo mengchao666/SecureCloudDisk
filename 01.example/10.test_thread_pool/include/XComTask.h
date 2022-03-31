@@ -24,6 +24,9 @@ public:
     // 接收到消息的回调，由业务类重载
     virtual bool Write(const XMsg *msg);
 
+    // 连接成功的消息回调，由业务类重载
+    virtual void ConnectedCB() {}
+
     virtual void EventCB(short what);
 
     virtual void ReadCB(const XMsg *msg);

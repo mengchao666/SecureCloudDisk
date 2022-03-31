@@ -1,16 +1,12 @@
 #ifndef XDISKCLIENT_H
 #define XDISKCLIENT_H
 #include <string>
+#include <QObject>
 
-class XDiskClient
+class XDiskClient : public QObject
 {
-private:
-    XDiskClient() = default;//为啥写个=default就能编过？下面两行就编译不过 MacOS M1Pro
-    // XDiskClient();
-    // XDiskClient(){}
-    std::string m_serverIP;
-    int m_serverPort = 0;
-    std::string m_root;
+    Q_OBJECT
+
 public:
     // 单例模式
     static XDiskClient *Get()
@@ -42,6 +38,18 @@ public:
     {
         this->m_root = root;
     }
+
+signals:
+    void SDir(std::string dirs);
+
+private:
+    XDiskClient() = default;//为啥写个=default就能编过？下面两行就编译不过 MacOS M1Pro
+    // XDiskClient();
+    // XDiskClient(){}
+    std::string m_serverIP;
+    int m_serverPort = 0;
+    std::string m_root;
+
 };
 
 #endif // XDISKCLIENT_H

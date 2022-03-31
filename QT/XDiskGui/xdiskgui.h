@@ -16,6 +16,7 @@ public:
     ~XDiskGUI();
 public slots:
     void Refresh();
+    void UpdateDir(std::string dirs);
     void Upload();
 
 private:

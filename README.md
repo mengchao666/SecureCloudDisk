@@ -35,4 +35,7 @@ qtcreator:install online
 
 https://download.qt.io/official_releases/online_installers/
 
+1. undefined reference to vtable fot xxx
+如果是加上Q_OBJECT导致报错的，只需要重新运行qmake就可以了
+
 

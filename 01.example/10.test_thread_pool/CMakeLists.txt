@@ -7,7 +7,8 @@ add_compile_options(-std=c++11)
 set(SRC_LIST  ${CMAKE_CURRENT_SOURCE_DIR}/src/XThreadPool.cpp 
               ${CMAKE_CURRENT_SOURCE_DIR}/src/XThread.cpp 
               ${CMAKE_CURRENT_SOURCE_DIR}/src/XServerTask.cpp 
-              ${CMAKE_CURRENT_SOURCE_DIR}/src/XComTask.cpp)
+              ${CMAKE_CURRENT_SOURCE_DIR}/src/XComTask.cpp 
+              ${CMAKE_CURRENT_SOURCE_DIR}/src/XTools.cpp)
               
 project (demo)
 

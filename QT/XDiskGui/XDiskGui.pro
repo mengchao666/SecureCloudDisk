@@ -11,11 +11,13 @@ INCLUDEPATH += ../../01.example/10.test_thread_pool/include/
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    XDirTask.cpp \
     main.cpp \
     xdiskclient.cpp \
     xdiskgui.cpp
 
 HEADERS += \
+    XDirTask.h \
     xdiskclient.h \
     xdiskgui.h
 

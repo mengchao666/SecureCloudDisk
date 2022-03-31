@@ -102,11 +102,8 @@ void XComTask::EventCB(short what)
     {
         cout << "connect is success" << endl;
         // bufferevent_write(m_bev, "OK", 3);
-        XMsg msg;
-        msg.type = MSG_GETDIR;
-        msg.size = 3;
-        msg.data = "./";
-        Write(&msg);
+        // 通知连接成功
+        ConnectedCB();
     }
 
     if (what & BEV_EVENT_ERROR || what & BEV_EVENT_TIMEOUT)
