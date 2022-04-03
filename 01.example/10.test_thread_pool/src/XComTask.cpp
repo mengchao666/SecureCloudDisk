@@ -11,6 +11,26 @@ static void SReadCB(struct bufferevent *bev, void *ctx)
     task->ReadCB();
 }
 
+static void SWriteCB(struct bufferevent *bev, void *ctx)
+{
+    auto task = (XComTask *)ctx;
+    task->WriteCB();
+}
+
+bool XComTask::Write(const void *data, int size)
+{
+    if (!m_bev || !data || size <= 0)
+    {
+        return false;
+    }
+    int re = bufferevent_write(m_bev, data, size);
+    if (re != 0)
+    {
+        return false;
+    }
+    return true;
+}
+
 bool XComTask::Write(const XMsg *msg)
 {
     if (!m_bev || !msg || !msg->data || msg->size <= 0)
@@ -33,6 +53,14 @@ bool XComTask::Write(const XMsg *msg)
     return true;
 }
 
+// 激活写入回调
+void XComTask::BeginWrite()
+{
+    if (!m_bev)
+        return;
+    bufferevent_trigger(m_bev, EV_WRITE, 0);
+}
+
 void XComTask::ReadCB(const XMsg *msg)
 {
     cout << "mengchao test 2222222222222222222222222 ReadCB" << endl;
@@ -44,6 +72,16 @@ void XComTask::ReadCB()
     cout << "mengchao test 111111111111111111111111 ReadCB" << endl;
     for (;;) // 确保边缘触发时能读到所有数据
     {
+        if (!m_isRecvMsg)
+        {
+            int len = bufferevent_read(m_bev, readbuffer, sizeof(readbuffer));
+            if (len <= 0)
+            {
+                return;
+            }
+            ReadCB(readbuffer, len);
+            continue;
+        }
         // 接收消息XMsgHead
         // 接收头部信息
         if (!m_msg.data)
@@ -61,8 +99,10 @@ void XComTask::ReadCB()
             }
 
             // 验证消息的有效性
-            if (m_msg.type >= MSG_MAX_TYPE || m_msg.size <= 0 || m_msg.size > MSG_MAX_SIZE)
+            if (m_msg.type >= MSG_MAX_TYPE || m_msg.size < 0 || m_msg.size > MSG_MAX_SIZE)
             {
+                cout << "m_msg.type = " << m_msg.type << endl;
+                cout << "mm_msg.size = " << m_msg.size << endl;
                 cerr << "msg head is error" << endl;
                 return;
             }
@@ -90,11 +130,6 @@ void XComTask::ReadCB()
             memset(&m_msg, 0, sizeof(m_msg));
         }
     }
-}
-
-static void SWriteCB(struct bufferevent *bev, void *ctx)
-{
-    cout << "mengchao test 0000000000000000000 SWriteCB" << endl;
 }
 
 void XComTask::EventCB(short what)
@@ -141,6 +176,8 @@ bool XComTask::Init()
     {
         cerr << "bufferevent_socket_new error " << endl;
     }
+
+    cout << "mengchaotest 66666666666666666666666" << endl;
 
     // 设置回调
     bufferevent_setcb(m_bev, SReadCB, SWriteCB, SEventCB, this);

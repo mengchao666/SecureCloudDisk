@@ -11,6 +11,7 @@
         "complex": "cpp",
         "new": "cpp",
         "thread": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "iosfwd": "cpp"
     }
 }

@@ -14,12 +14,14 @@ SOURCES += \
     XDirTask.cpp \
     main.cpp \
     xdiskclient.cpp \
-    xdiskgui.cpp
+    xdiskgui.cpp \
+    xuploadtask.cpp
 
 HEADERS += \
     XDirTask.h \
     xdiskclient.h \
-    xdiskgui.h
+    xdiskgui.h \
+    xuploadtask.h
 
 FORMS += \
     xdiskgui.ui

@@ -17,6 +17,9 @@ XDiskGUI::XDiskGUI(QWidget *parent)
     qRegisterMetaType<std::string>("std::string");
     // 绑定目录获取的信号
     QObject::connect(XDiskClient::Get(), SIGNAL(SDir(std::string)), this, SLOT(UpdateDir(std::string)));
+
+    QObject::connect(XDiskClient::Get(), SIGNAL(SUploadComplete()), this, SLOT(Refresh()));
+    Refresh();
 }
 
 XDiskGUI::~XDiskGUI()
@@ -46,9 +49,8 @@ void XDiskGUI::UpdateDir(std::string dirs)
     }
 }
 
-void XDiskGUI::Refresh()
+void XDiskGUI::UpdateServerInfo()
 {
-    // 服务器路径 服务器IP 服务器端口
     string ip = ui->ipEdit->text().toStdString();
     string root = ui->pathEdit->text().toStdString();
     int port = ui->portBox->value();
@@ -58,6 +60,11 @@ void XDiskGUI::Refresh()
     XDiskClient::Get()->SetServerIP(ip);
     XDiskClient::Get()->SetServerPort(port);
     XDiskClient::Get()->SetServerRoot(root);
+}
+
+void XDiskGUI::Refresh()
+{
+    UpdateServerInfo();
     XDiskClient::Get()->GetDir();
     // 2等待回调
 
@@ -71,8 +78,11 @@ void XDiskGUI::Upload()
     {
         return;
     }
+
+    UpdateServerInfo();
+    XDiskClient::Get()->Upload(filename.toStdString());
     //插入到列表
-    ui->filelistWidget->insertRow(0);// 插入在开头位置
-    ui->filelistWidget->setItem(0, 0, new QTableWidgetItem(filename));
-    ui->filelistWidget->setItem(0, 1, new QTableWidgetItem(tr("%1Byte").arg(1900)));
+//    ui->filelistWidget->insertRow(0);// 插入在开头位置
+//    ui->filelistWidget->setItem(0, 0, new QTableWidgetItem(filename));
+//    ui->filelistWidget->setItem(0, 1, new QTableWidgetItem(tr("%1Byte").arg(1900)));
 }

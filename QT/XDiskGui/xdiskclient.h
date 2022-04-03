@@ -21,6 +21,10 @@ public:
     // @para path 目录路径
     void GetDir();
 
+    // 上传文件请求
+    // @para filepath 文件路径
+    void Upload(std::string filepath);
+
     // 服务器IP
     void SetServerIP(std::string ip)
     {
@@ -41,6 +45,7 @@ public:
 
 signals:
     void SDir(std::string dirs);
+    void SUploadComplete();
 
 private:
     XDiskClient() = default;//为啥写个=default就能编过？下面两行就编译不过 MacOS M1Pro
