@@ -26,7 +26,7 @@ std::string GetDirData(std::string path)
         {
             continue;
         }
-        sprintf(buf, "%s, %lld", entry->d_name, statbuf.st_size);
+        sprintf(buf, "%s, %ld;", entry->d_name, statbuf.st_size);
         data += buf;
     }
 

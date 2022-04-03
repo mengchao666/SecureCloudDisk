@@ -5,14 +5,18 @@ using namespace std;
 
 void XFileServerTask::GetDir(const XMsg *msg)
 {
+    cout << " mengchao  XMsg msg is  = " << (char *)msg->data << endl;
     if (!msg->data)
     {
+        cout << "the code is go here" << endl;
         return;
     }
     int len = strlen(msg->data);
+    cout << "mengchao len = " << len << endl;
     string root = msg->data;
     if (root.empty())
     {
+        cout << "mengchao mengchao the code is go here" << endl;
         root = "../";
     }
     // string dir = "file1,1024;file2,4096;file3.zip,10240";
@@ -26,6 +30,7 @@ void XFileServerTask::GetDir(const XMsg *msg)
 
 void XFileServerTask::ReadCB(const XMsg *msg)
 {
+    cout << "mengchao test 555555555555555555555555 ReadCB" << endl;
     switch (msg->type)
     {
     case MSG_GETDIR:

@@ -6,7 +6,7 @@ using namespace std;
 
 static void SReadCB(struct bufferevent *bev, void *ctx)
 {
-    cout << "SReadCB" << endl;
+    cout << "mengchao test 3333333333333333333333333 SReadCB" << endl;
     auto task = (XComTask *)ctx;
     task->ReadCB();
 }
@@ -35,11 +35,13 @@ bool XComTask::Write(const XMsg *msg)
 
 void XComTask::ReadCB(const XMsg *msg)
 {
+    cout << "mengchao test 2222222222222222222222222 ReadCB" << endl;
     cout << "recv Msg " << msg->type << "size = " << msg->size << endl;
 }
 
 void XComTask::ReadCB()
 {
+    cout << "mengchao test 111111111111111111111111 ReadCB" << endl;
     for (;;) // 确保边缘触发时能读到所有数据
     {
         // 接收消息XMsgHead
@@ -82,7 +84,7 @@ void XComTask::ReadCB()
         if (m_msg.recved == m_msg.size)
         {
             // 处理消息
-            cout << "recved msg" << m_msg.size << endl;
+            cout << "recved msg size = " << m_msg.size << endl;
             ReadCB(&m_msg);
             delete m_msg.data;
             memset(&m_msg, 0, sizeof(m_msg));
@@ -92,7 +94,7 @@ void XComTask::ReadCB()
 
 static void SWriteCB(struct bufferevent *bev, void *ctx)
 {
-    cout << "SWriteCB" << endl;
+    cout << "mengchao test 0000000000000000000 SWriteCB" << endl;
 }
 
 void XComTask::EventCB(short what)

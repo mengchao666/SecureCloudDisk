@@ -16,10 +16,10 @@ public:
     // 服务器路径
     void SetServerRoot(std::string root)
     {
-        this->m_root = root;
+        this->m_root2 = root;
     }
 private:
-    std::string m_root;
+    std::string m_root2;
 };
 
 #endif // XDIRTASK_H

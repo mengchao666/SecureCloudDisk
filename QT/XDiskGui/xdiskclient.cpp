@@ -13,7 +13,7 @@ bool XDiskClient::Init()
     return true;
 }
 
-void DirCB(string dirs)
+static void DirCB(string dirs)
 {
     cout << dirs << endl;
     XDiskClient::Get()->SDir(dirs);
@@ -31,7 +31,7 @@ void XDiskClient::GetDir()
     auto task = new XDirTask();
     task->SetServerIP(m_serverIP);
     task->SetServerPort(m_serverPort);
-    task->SetServerIP(m_root);
+    task->SetServerRoot(m_root);
     task->DirCB = DirCB;
     XThreadPool::Get()->Dispatch(task);
 
